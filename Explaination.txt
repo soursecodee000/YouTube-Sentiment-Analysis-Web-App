@@ -1,0 +1,39 @@
+YouTube Sentiment Analysis Web App
+
+This is a Python script using the Flask web framework to create a web application that performs sentiment analysis on YouTube video comments. 
+The application takes a YouTube video URL as input, extracts the video ID, fetches the comments using the YouTube API,
+and analyzes the sentiment of those comments using the NLTK (Natural Language Toolkit) library.
+
+Let me explain the key components of the script:
+
+Flask Setup:
+
+The script starts by importing necessary modules, including Flask for web development, Google API client for interacting with the YouTube API, NLTK for sentiment analysis, and other standard libraries.
+NLTK Setup:
+
+It downloads the VADER lexicon from NLTK, which is used for sentiment analysis.
+YouTube API Setup:
+
+It sets up the YouTube API credentials using the API key.
+Flask Application and Routes:
+
+The Flask application is created, and two routes are defined:
+The '/' route handles the home page, where users can input a YouTube video URL, and the application performs sentiment analysis on the comments for that video.
+The '/download_comments' route allows users to download the analyzed comments in an Excel file.
+YouTube API Functions:
+
+fetch_comments(video_id): Calls the YouTube API to fetch comments for a given video ID.
+perform_sentiment_analysis(comments): Analyzes the sentiment of the comments and calculates the percentage of positive, negative, and neutral comments.
+get_video_details(video_id): Fetches details like video title, thumbnail URL, and duration using the YouTube API.
+Helper Functions:
+
+extract_video_id(url): Extracts the video ID from a YouTube video URL.
+download_comments(): Handles the download of analyzed comments in an Excel file.
+Flask Routes Implementation:
+
+The '/' route handles both GET and POST requests. If a video URL is provided through a form, it fetches and analyzes comments.
+The '/download_comments' route handles the download of comments in an Excel file.
+Run the Flask Application:
+
+The script checks if it is the main module and runs the Flask application in debug mode.
+To use this script, you would run it, and it would start a web server accessible at http://127.0.0.1:5000/ by default. Users can input a YouTube video URL, and the application will display sentiment analysis results along with video details and comments. Additionally, users can download the analyzed comments in an Excel file.
