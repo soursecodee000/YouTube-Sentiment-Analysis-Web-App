@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YouTube Comments Sentiment Analysis</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        canvas {
+            max-width: 400px;
+            margin: 20px auto;
+        }
+
+        .positive-comment {
+            color: #4CAF50;
+        }
+
+        .negative-comment {
+            color: #FF5252;
+        }
+
+        .neutral-comment {
+            color: #FFA726;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>YouTube Comment Analysis</h1>
+        <form method="POST" action="/">
+            <input type="text" id="video_url" name="video_url">
+            <input type="submit" value="Fetch Comments">
+        </form>
+        <script> 
+            if (title && duration)
+                <div class="panel">
+                    <div class="thumbnail">
+                        <img id="image" src="13.jpg" alt="Thumbnail"></img>
+                    </div>
+                    <div class="details">
+                        <h2 id="title">{{ title }}</h2>
+                        <p id="duration">{{ duration }}</p><br></br>
+                        <p id="statistics">Negative - {{ negative_percentage }}%</p>
+                        <p id="statistics">Positive - {{ positive_percentage }}%</p>
+                        <p id="statistics">Neutral - {{ neutral_percentage }}%</p>
+                    </div>
+                </div>
+        </script>
+       
+    </div>
+    <div class="container">
+         if (comments)
+            <h2>All Comments:</h2>
+            <ul>
+                {% for comment, sentiment in comments %}
+                    <li class="{{ sentiment|lower() }}-comment">{{ loop.index }}. {{ comment }} - {{ sentiment }}</li>
+                {% endfor %}
+            </ul>
+            <form action="/download_comments" method="get">
+                <input type="hidden" name="video_title" value="{{ title }}">
+                <input type="hidden" name="comments" value="{{ comments|join(', ') }}">
+                <button type="submit">Download Comments</button>
+            </form>
+            {% else %}
+                <p>No comments available.</p>
+        endif
+    </div>
+    <div class="container">
+        <div class="charts-container">
+            <div class="chart-wrapper">
+                <canvas id="positiveChart"></canvas>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="negativeChart"></canvas>
+            </div>
+            <div class="chart-wrapper">
+                <canvas id="neutralChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis Charts</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <canvas id="positiveChart" width="200" height="200"></canvas>
+    <canvas id="negativeChart" width="200" height="200"></canvas>
+    <canvas id="neutralChart" width="200" height="200"></canvas>
+
+    <script>
+        var positivePercentage = 60;  // Replace with your actual positive percentage
+        var negativePercentage = 20;  // Replace with your actual negative percentage
+        var neutralPercentage = 20;   // Replace with your actual neutral percentage
+
+        var options = {
+            cutoutPercentage: 80,
+            responsive: true,
+            legend: {
+                display: false
+            },
+            tooltips: {
+                callbacks: {
+                    label: function (tooltipItem, data) {
+                        var dataset = data.datasets[tooltipItem.datasetIndex];
+                        var total = dataset.data.reduce(function (previousValue, currentValue) {
+                            return previousValue + currentValue;
+                        });
+                        var currentValue = dataset.data[tooltipItem.index];
+                        var percentage = Math.round((currentValue / total) * 100);
+                        return percentage + '%';
+                    }
+                }
+            }
+        };
+
+        var positiveChartCanvas = document.getElementById("positiveChart").getContext("2d");
+        var positiveChart = new Chart(positiveChartCanvas, {
+            type: 'doughnut',
+            data: {
+                labels: ['Positive', 'Remaining'],
+                datasets: [{
+                    data: [positivePercentage, 100 - positivePercentage],
+                    backgroundColor: ['#4CAF50', '#e6e6e6']
+                }]
+            },
+            options: options
+        });
+
+        var negativeChartCanvas = document.getElementById("negativeChart").getContext("2d");
+        var negativeChart = new Chart(negativeChartCanvas, {
+            type: 'doughnut',
+            data: {
+                labels: ['Negative', 'Remaining'],
+                datasets: [{
+                    data: [negativePercentage, 100 - negativePercentage],
+                    backgroundColor: ['#FF5252', '#e6e6e6']
+                }]
+            },
+            options: options
+        });
+
+        var neutralChartCanvas = document.getElementById("neutralChart").getContext("2d");
+        var neutralChart = new Chart(neutralChartCanvas, {
+            type: 'doughnut',
+            data: {
+                labels: ['Neutral', 'Remaining'],
+                datasets: [{
+                    data: [neutralPercentage, 100 - neutralPercentage],
+                    backgroundColor: ['#FFA726', '#e6e6e6']
+                }]
+            },
+            options: options
+        });
+    </script>
+
+</body>
+</html>
+
+</body>
